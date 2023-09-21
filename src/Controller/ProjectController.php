@@ -15,6 +15,7 @@ class ProjectController extends AbstractController
 {
 	public function __construct(private EntityManagerInterface $em) {}
 
+	// Function to get all products using GET method
     #[Route('/projects', name: 'project_index', methods: ['GET'])]
     public function index(ProjectRepository $repository): JsonResponse
     {
@@ -32,6 +33,7 @@ class ProjectController extends AbstractController
         return $this->json($data);
     }
 
+	// Function to create a new product using POST method
 	#[Route('/project', name: 'project_create', methods: ['POST'])]
 	public function create(Request $request): JsonResponse
 	{
@@ -51,6 +53,7 @@ class ProjectController extends AbstractController
 		return $this->json($data);
 	}
 
+	// Function to get a single product using GET method
 	#[Route('/project/{id}', name: 'project_show', methods:['GET'] )]
 	public function show(int $id): JsonResponse
 	{
@@ -69,6 +72,7 @@ class ProjectController extends AbstractController
 		return $this->json($data);
 	}
 
+	// Function to update a product using PUT/PATCH method
 	#[Route('/project/{id}', name: 'project_update', methods:['put', 'patch'] )]
 	public function update(Request $request, int $id): JsonResponse
 	{
@@ -91,6 +95,7 @@ class ProjectController extends AbstractController
 		return $this->json($data);
 	}
 
+	// Function to delete a product using DELETE method
 	#[Route('/project/{id}', name: 'project_delete', methods:['delete'] )]
 	public function delete(int $id): JsonResponse
 	{
