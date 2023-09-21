@@ -1,0 +1,58 @@
+{% extends 'base.html.twig' %}
+{% block title %}API Endpoints{% endblock %}
+{% block body %}
+	<h1>API Endpoints</h1>
+	
+	<div class="first">
+		<h2>Project</h2>
+		<div class="all">
+			<h3>All projects</h3>
+			<p>GET /api/projects</p>
+			<div class="example">
+				<h4>Example</h4>
+				<p>GET /api/projects</p>
+				<p>This endpoint return array of all projects content</p>
+				<code>
+					{{ render(controller('App\\Controller\\ProjectController::getAllProjects')) }}
+				</code>
+			</div>
+		</div>
+		<div class="show">
+			<h3>Show project</h3>
+			<p>GET /api/project/{id}</p>
+			<p>This endpoint return an array with informations of {id} if exists</p>
+			<div class="example">
+				<h4>Example</h4>
+				<p>GET /api/project/2</p>
+				<code>
+					{{ render(controller('App\\Controller\\ProjectController::show', {id: 2})) }}
+				</code>
+			</div>
+		</div>
+		<div class="create">
+			<h3>Create project</h3>
+			<p>POST /api/project</p>
+			<p>Using form data or pass parameters in uri like <code lang="json">/api/project<strong>?name=NAME&description=DESCRIPTION</strong></code>
+				and it's return array of them like:</p>
+			<code>
+				{{ render(controller('App\\Controller\\ProjectController::show', {id: lastProject})) }}
+			</code>
+		</div>
+		<div class="update">
+			<h3>Update project</h3>
+			<p>PUT /api/project/{id}</p>
+			<div class="example">
+				<h4>Example</h4>
+				<p>PUT /api/projects/2?name=Project 2&description=description Project2</p>
+				<code>
+					{{ render(controller('App\\Controller\\ProjectController::show', {id: 2})) }}
+				</code>
+			</div>
+		</div>
+		<div class="delete">
+			<h3>Delete project</h3>
+			<p>DELETE /api/project/{id}</p>
+			<p>This method return success message for delete project in database if <strong>{id}</strong> exists</p>
+		</div>
+	</div>
+{% endblock %}

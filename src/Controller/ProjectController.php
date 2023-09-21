@@ -3,11 +3,11 @@
 namespace App\Controller;
 
 use App\Entity\Project;
-use App\Repository\ProjectRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 #[Route('/api', name: 'api_')]
@@ -15,11 +15,26 @@ class ProjectController extends AbstractController
 {
 	public function __construct(private EntityManagerInterface $em) {}
 
+	#[Route('/', name: 'index')]
+	public function index(): Response
+	{
+		$projets = json_decode($this->getAllProjects()->getContent());
+		$project2 = json_decode($this->show(2)->getContent());
+
+		$lastProject = $this->em->getRepository(Project::class)->findOneBy([], ['id' => 'desc']); // Get last project
+
+		return $this->render('project/index.html.twig', [
+			'projects' => $projets,
+			'project2' => $project2,
+			'lastProject' => $lastProject->getId(),
+		]);
+	}
+
 	// Function to get all products using GET method
-    #[Route('/projects', name: 'project_index', methods: ['GET'])]
-    public function index(ProjectRepository $repository): JsonResponse
+    #[Route('/projects', name: 'project_all', methods: ['GET'])]
+    public function getAllProjects(): JsonResponse
     {
-		$products = $repository->findAll();
+		$products = $this->em->getRepository(Project::class)->findAll();
 
 		$data = [];
 
@@ -82,8 +97,8 @@ class ProjectController extends AbstractController
 			return $this->json('No project found for id' . $id, 404);
 		}
 
-		$project->setName($request->request->get('name'));
-		$project->setDescription($request->request->get('description'));
+		$project->setName($request->get('name'));
+		$project->setDescription($request->get('description'));
 		$this->em->flush();
 
 		$data =  [
